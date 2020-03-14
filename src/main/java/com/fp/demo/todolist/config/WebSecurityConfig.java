@@ -36,18 +36,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    protected void configure(HttpSecurity httpSecurity)
 	      throws Exception {
 	        httpSecurity.authorizeRequests()
-	          .antMatchers("/h2-console/**")
+	          .antMatchers("/h2-console/**", "/css/**")
 	          .permitAll()
 	          .anyRequest()
 	          .authenticated()
 	          .and().csrf().disable()
 	          .formLogin().successForwardUrl("/tasks");
 	         
-	        httpSecurity.csrf()
-	          .ignoringAntMatchers("/");
+	       
 	        httpSecurity.headers()
 	          .frameOptions()
-	          .sameOrigin();
+	          .sameOrigin().and().csrf().disable();
 	    }
 	@Bean
 	public PasswordEncoder passwordEncoder() {

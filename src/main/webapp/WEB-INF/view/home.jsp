@@ -7,7 +7,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="/css/home.css" rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
@@ -19,68 +21,92 @@
 <meta charset="ISO-8859-1">
 <title>TODO list</title>
 <script type="text/javascript">
-var post;
-$( document ).ready(function() {
-	post = function (url) {
+	var post;
+	$(document).ready(function() {
 
-	$.ajax({
-		   type:'POST',
-		   url :url, 
-		   headers: {'Access-Control-Allow-Origin': '*',
-		   'Access-Control-Allow-Methods': '*',
-		   'Access-Control-Allow-Headers': 'api-key,content-type',
-		   'Access-Control-Allow-Credentials': true},
-		   success: function(data) {
-		        console.log('success',data);
-		   },
-		   error:function(exception){alert('Exeption:'+exception);}
-		}); 
-}});
+		post = function(url) {
 
+			$.ajax({
+				type : 'POST',
+				url : url,
+				headers : {
+					'Access-Control-Allow-Origin' : '*',
+					'Access-Control-Allow-Methods' : '*',
+					'Access-Control-Allow-Headers' : 'api-key,content-type',
+					'Access-Control-Allow-Credentials' : true
+				},
+				success : function(data) {
+					location.reload();
+				},
+				error : function(exception) {
+					alert('Exeption:' + exception);
+				}
+			});
+		}
+	});
 </script>
 </head>
 <body>
 	<div class="container p-3 my-3 border">
-		<div class="row">
-			<div class="col-sm mx-auto">Hello ${user}</div>
+		
+			<p class="text-center">Hello ${user}</p>
 
-		</div>
+
+	
+
+		<form:form method="POST" modelAttribute="task" action="/task/add">
+			<div class="row">
+				<div class="col-sm">
+					
+				</div>
+				<div class="col-sm">
+					<form:input path="description" type="text" class="form-control"
+						placeholder="Enter task description" />
+				</div>
+				<form:hidden path="username" value="${user}" />
+				<div class="col-sm">
+					<button id="addTask" type="submit" class="btn btn-success">Add
+						a task</button>
+				</div>
+			</div>
+		</form:form>
 		<c:if test="${empty tasks}">
 			<div class="row">
 				<div class="col-sm">You don't have any task</div>
 
 			</div>
 		</c:if>
-		<c:if test="${not empty tasks}">
-			<div class="row">
-				<form:form method="POST" action="/SpringMVCCRUDSimple/editsave">
-					<table class="table table-striped">
-						<thead>
+
+		<div class="row">
+		<div id="table-style">
+			<form:form method="POST" action="/SpringMVCCRUDSimple/editsave">
+				<table id="task-table" class="table table-striped">
+					<thead>
+						<tr>
+							<th class="w-50" scope="col">Description</th>
+							<th class="w-30" scope="col">Last Update</th>
+							<th class="w-20"scope="col" ></th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach var="task" items="${tasks}">
 							<tr>
-								<th scope="col">Description</th>
-								<th scope="col">Last Update</th>
-								<th scope="col">#</th>
+								<td>${task.description}</td>
+								<td>${task.lastUpdate}</td>
+								<td style='text-align: right;'><spring:url value="/users/${task.id}" var="userUrl" />
+									<spring:url value="/task/${task.id}/delete" var="deleteUrl" />
+								
+									<button type="button" class="btn btn-danger"
+										onclick="post('${deleteUrl}')">Delete</button>
+								</td>
 							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="task" items="${tasks}">
-								<tr>
-									<td>${task.description}</td>
-									<td>${task.lastUpdate}</td>
-									<td><spring:url value="/users/${task.id}" var="userUrl" />
-										<spring:url value="/task/${task.id}/delete" var="deleteUrl" />
-										<spring:url value="/users/${task.id}/update" var="updateUrl" />
-										<button type="button" class="btn btn-primary editbtn">Edit</button>
-										<button type="button" class="btn btn-danger"
-											onclick="this.disabled=true;post('${deleteUrl}')">Delete</button>
-										<button type="button" class="btn btn-success">Add</button></td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</form:form>
+						</c:forEach>
+					</tbody>
+				</table>
+			</form:form>
 			</div>
-		</c:if>
+		</div>
+
 	</div>
 
 
