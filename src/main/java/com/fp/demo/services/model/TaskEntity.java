@@ -1,13 +1,15 @@
-package com.fp.demo.todolist.model;
+package com.fp.demo.services.model;
 
 import java.util.List;
 
-public class TaskDTO {
+import com.fp.demo.todolist.model.Task;
+
+public class TaskEntity {
 
 	private List<Task> taskList;
 
 	
-	public TaskDTO(List<Task> taskList) {
+	public TaskEntity(List<Task> taskList) {
 		super();
 		this.taskList = taskList;
 	}
