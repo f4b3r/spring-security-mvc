@@ -1,0 +1,12 @@
+container{
+	width: 60%;
+}
+
+#addTask{
+	height: 40px;
+}
+
+#table-style{
+	width: 98%;
+	margin-top: 10px;
+}

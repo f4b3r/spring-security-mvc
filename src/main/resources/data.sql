@@ -1,1 +1,0 @@
-insert into task values(1,'descr',PARSEDATETIME('26 Jul 2016, 05:15:58 AM','dd MMM yyyy, hh:mm:ss a','en'),'user')
